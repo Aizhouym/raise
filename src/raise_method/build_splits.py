@@ -259,7 +259,9 @@ def main(argv=None) -> None:
     (output_dir / "rl").mkdir(parents=True, exist_ok=True)
 
     def spath(sid: str) -> str:
-        return str(scenario_root / sid)
+        # Keep records portable inside the release.  Consumers resolve this
+        # ID against --scenario-root instead of embedding a machine path.
+        return sid
 
     with (output_dir / "heldout" / "heldout.jsonl").open("w") as fh:
         for sid in sorted(heldout_ids):

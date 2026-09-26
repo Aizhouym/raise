@@ -21,9 +21,10 @@ policy from the requirement and schema without verifier feedback.
 
 The full-resolution diagram is available as [`raise-method.pdf`](raise-method.pdf).
 
-The release intentionally contains source code and the method overview figure
-only. It does not contain model weights, training datasets, checkpoints, logs,
-generated runs, or evaluation results.
+The release contains the source code, method overview figure, and the Cedar
+scenario corpus needed to construct training/evaluation splits. It does not
+contain model weights, checkpoints, logs, generated runs, or evaluation
+results.
 
 ## Layout
 
@@ -38,10 +39,13 @@ src/raise_method/
   sft.py            LoRA + TRL supervised fine-tuning entry point
   build_splits.py   leakage-controlled SFT/RL/held-out split builder
   prepare_data.py   JSONL-to-veRL-Parquet preparation
+  dataset.py        bundled corpus extraction helper
   evaluate.py       vLLM generation plus exact verifier evaluation
   merge_adapter.py  LoRA merge/export helper
+  run.py            feedback-guided GRPO launcher
   verifier/         Cedar validate/symcc wrapper
 verl.lock.json       pinned veRL revision used by the RL adapter
+data/                bundled Cedar scenarios and generated split inputs
 ```
 
 The repository directory is named `raise`; the importable Python package is
@@ -65,14 +69,16 @@ The veRL configuration in `src/raise_method/configs/raise.yaml` expects
 
 ## Reproduction entry points
 
-The code release expects the CedarForge scenario corpus and a local model to
-be supplied separately. It does not copy the corpus into GitHub.
+The repository includes the CedarForge training corpus as
+`data/cedarforge-scenarios.tar.gz`. Unpack it once before building splits:
 
 ```bash
+python -m raise_method.dataset
+
 python -m raise_method.build_splits \
-  --manifest /path/to/manifest.jsonl \
-  --scenario-root /path/to/scenarios \
-  --output /tmp/raise-splits
+  --manifest data/manifest.jsonl \
+  --scenario-root data/scenarios \
+  --output data/splits/v2
 
 torchrun --nproc_per_node=4 -m raise_method.sft \
   --model-path /path/to/base-model \
@@ -80,13 +86,22 @@ torchrun --nproc_per_node=4 -m raise_method.sft \
   --output-dir /path/to/checkpoints/raise-sft
 
 python -m raise_method.prepare_data \
-  --train /path/to/train.jsonl --dev /path/to/dev.jsonl \
-  --output /path/to/raise-data
+  --train data/splits/v2/rl/grpo_train.jsonl \
+  --dev data/splits/v2/heldout/heldout.jsonl \
+  --scenario-root data/scenarios \
+  --output data/rl
+
+python -m raise_method.run \
+  --model-path /path/to/base-model \
+  --data data/rl \
+  --run-name raise-grpo-01
 ```
 
-For distributed RAISE RL, install the pinned veRL revision from
-`requirements.txt`, set the four `RAISE_*` variables above, and launch
-`raise-rl` with `src/raise_method/configs/raise.yaml`. For model grading,
+The last command runs feedback-guided GRPO: it samples K candidates, verifies
+each candidate, selects frequently failed checks for fresh guided rollouts,
+and applies the context-corrected policy update under the original prompt.
+Install the pinned veRL revision from `requirements.txt` before launching.
+For model grading,
 `raise-evaluate` generates with vLLM and scores each completion with the exact
 Cedar verifier. `raise-merge-adapter` exports a merged LoRA model when needed.
 

@@ -1,0 +1,23 @@
+
+=== SPLIT REPORT ===
+heldout=375  RL=1039  SFT=4386
+
+[heldout]
+  origin: {'scaleup': 215, 'core': 110, 'rl8': 32, 'new6': 18}
+  tier:   {1: 12, 2: 83, 3: 196, 4: 49, 5: 22, 6: 8, 7: 3, 8: 2}
+  #areas: 19/19   #families: 134
+
+[RL]
+  origin: {'scaleup': 681, 'core': 225, 'rl8': 87, 'new6': 46}
+  tier:   {2: 275, 3: 764}
+  #areas: 19/19   #families: 135
+
+[SFT]
+  origin: {'core': 1360, 'scaleup': 2543, 'new6': 138, 'rl8': 345}
+  tier:   {1: 177, 2: 759, 3: 2338, 4: 632, 5: 418, 6: 59, 7: 2, 9: 1}
+  #areas: 19/19   #families: 139
+
+RL family-size histogram (scenarios per family): {1: 1, 3: 1, 4: 1, 5: 4, 6: 3, 7: 7, 8: 118}
+held-out area coverage: 19/19 areas
+
+outputs -> raise/data/splits/v2

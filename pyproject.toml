@@ -15,6 +15,7 @@ raise-build-splits = "raise_method.build_splits:main"
 raise-prepare-data = "raise_method.prepare_data:main"
 raise-evaluate = "raise_method.evaluate:main"
 raise-merge-adapter = "raise_method.merge_adapter:main"
+raise-grpo = "raise_method.run:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

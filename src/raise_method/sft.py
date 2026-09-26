@@ -50,7 +50,7 @@ _ROOT = _HERE.parents[1]
 # Defaults are deliberately local and overridable.  The release contains no
 # data or model weights, so users must provide --model-path and --train-file
 # (or set the corresponding environment variables).
-SFT_DATASET_DIR = Path(os.environ.get("RAISE_SFT_DIR", _ROOT / "data" / "sft"))
+SFT_DATASET_DIR = Path(os.environ.get("RAISE_SFT_DIR", _ROOT / "data" / "splits" / "v2" / "sft"))
 OUTPUT_DIR = Path(os.environ.get("RAISE_SFT_OUTPUT", _ROOT / "checkpoints" / "sft"))
 DEFAULT_MODEL = os.environ.get("RAISE_MODEL")
 
