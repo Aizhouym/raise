@@ -84,6 +84,8 @@ actor_rollout_ref:
   rollout:
     name: vllm
     mode: async
+    agent:
+      agent_loop_manager_class: raise_method.rollout.RaiseAgentLoopManager
     n: 8
     temperature: 0.9
     top_p: 1.0

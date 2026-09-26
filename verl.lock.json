@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/verl-project/verl.git",
+  "revision": "7aed6b230776f963fa09509c10d9c3a767d1102c",
+  "tag": "v0.8.0",
+  "model_type": "qwen3_5",
+  "status": "4B binary GPU training, checkpoint resume and TRL speed comparison validated; 27B and distributed OC/replay integration pending",
+  "reason": "Tagged release containing the Qwen3.5-27B FSDP example. Keep the training API fixed while porting OC."
+}

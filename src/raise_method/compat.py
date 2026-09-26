@@ -20,4 +20,4 @@ def install():
 
     # This imported helper is used only in the merged-LoRA export branch.
     transformer_impl.normalize_peft_param_name = snapshot_merged_params
-    print("CEDAR_COMPAT merged LoRA export uses independent weight snapshots", flush=True)
+    print("RAISE_COMPAT merged LoRA export uses independent weight snapshots", flush=True)

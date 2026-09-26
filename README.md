@@ -35,7 +35,13 @@ src/raise_method/
   loss.py           context-corrected policy loss
   rollout.py        veRL feedback-guided rollout adapter
   trainer.py        veRL trainer adapter
+  sft.py            LoRA + TRL supervised fine-tuning entry point
+  build_splits.py   leakage-controlled SFT/RL/held-out split builder
+  prepare_data.py   JSONL-to-veRL-Parquet preparation
+  evaluate.py       vLLM generation plus exact verifier evaluation
+  merge_adapter.py  LoRA merge/export helper
   verifier/         Cedar validate/symcc wrapper
+verl.lock.json       pinned veRL revision used by the RL adapter
 ```
 
 The repository directory is named `raise`; the importable Python package is
@@ -56,6 +62,33 @@ containing `schema.cedarschema`, `verification_plan.py`, and `references/`.
 Set `CEDAR` and `CVC5` to the two executable paths before scoring policies.
 The veRL configuration in `src/raise_method/configs/raise.yaml` expects
 `RAISE_ROOT`, `RAISE_MODEL`, `RAISE_DATA`, and `RAISE_RUN`.
+
+## Reproduction entry points
+
+The code release expects the CedarForge scenario corpus and a local model to
+be supplied separately. It does not copy the corpus into GitHub.
+
+```bash
+python -m raise_method.build_splits \
+  --manifest /path/to/manifest.jsonl \
+  --scenario-root /path/to/scenarios \
+  --output /tmp/raise-splits
+
+torchrun --nproc_per_node=4 -m raise_method.sft \
+  --model-path /path/to/base-model \
+  --train-file /tmp/raise-splits/sft/train.jsonl \
+  --output-dir /path/to/checkpoints/raise-sft
+
+python -m raise_method.prepare_data \
+  --train /path/to/train.jsonl --dev /path/to/dev.jsonl \
+  --output /path/to/raise-data
+```
+
+For distributed RAISE RL, install the pinned veRL revision from
+`requirements.txt`, set the four `RAISE_*` variables above, and launch
+`raise-rl` with `src/raise_method/configs/raise.yaml`. For model grading,
+`raise-evaluate` generates with vLLM and scores each completion with the exact
+Cedar verifier. `raise-merge-adapter` exports a merged LoRA model when needed.
 
 ## Method entry points
 

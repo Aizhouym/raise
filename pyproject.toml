@@ -8,8 +8,19 @@ version = "0.1.0"
 description = "Minimal implementation of RAISE for verifier-guided Cedar policy synthesis"
 requires-python = ">=3.10"
 
+[project.scripts]
+raise-rl = "raise_method.main:main"
+raise-sft = "raise_method.sft:run_sft"
+raise-build-splits = "raise_method.build_splits:main"
+raise-prepare-data = "raise_method.prepare_data:main"
+raise-evaluate = "raise_method.evaluate:main"
+raise-merge-adapter = "raise_method.merge_adapter:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+raise_method = ["configs/*.yaml"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
