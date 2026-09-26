@@ -11,14 +11,14 @@ Design (confirmed 2026-08-26):
     groups gradient-bearing (0 < pass_rate < 1).
   - SFT: everything else non-held-out (all tiers) -> broad gold-imitation coverage.
   - Splits are scenario-disjoint; held-out signatures are disjoint from all train.
-  - Outputs go to datagen/artifacts/datasets/v2/ (old files are left untouched so
-    previously reported numbers stay reproducible).
+  - Outputs go to data/splits/v2/ by default; existing files are overwritten
+    only in the user-specified output directory.
 
 The release contains no scenarios. Supply a manifest and scenario directory
 from CedarForge (or another compatible corpus), for example:
 
-    python -m raise_method.build_splits --manifest /data/manifest.jsonl \
-        --scenario-root /data/scenarios --output /tmp/raise-splits
+    python -m raise_method.build_splits --manifest data/manifest.jsonl \
+        --scenario-root data/scenarios --output data/splits/v2
 """
 from __future__ import annotations
 

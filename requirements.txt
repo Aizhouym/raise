@@ -11,9 +11,8 @@ ray[default]>=2.9
 numpy>=1.24
 pytest>=8.0
 safetensors>=0.4
+vllm>=0.18.1
 
-# Required only for distributed RL training.  vLLM is required only for
-# generation/evaluation and may need to be installed from its CUDA-specific
-# wheel for the target machine.
+# Required for distributed RL training. vLLM may need to be installed from
+# its CUDA-specific wheel for the target machine.
 verl @ git+https://github.com/verl-project/verl.git@7aed6b230776f963fa09509c10d9c3a767d1102c
-# vllm>=0.8

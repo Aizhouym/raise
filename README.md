@@ -45,6 +45,7 @@ src/raise_method/
   run.py            feedback-guided GRPO launcher
   verifier/         Cedar validate/symcc wrapper
 verl.lock.json       pinned veRL revision used by the RL adapter
+constraints-cuda.txt known-compatible GPU dependency versions
 data/                bundled Cedar scenarios and generated split inputs
 ```
 
@@ -55,6 +56,7 @@ The repository directory is named `raise`; the importable Python package is
 
 ```bash
 python -m pip install -e .
+pip install -r requirements.txt
 pytest
 ```
 
@@ -82,7 +84,7 @@ python -m raise_method.build_splits \
 
 torchrun --nproc_per_node=4 -m raise_method.sft \
   --model-path /path/to/base-model \
-  --train-file /tmp/raise-splits/sft/train.jsonl \
+  --train-file data/splits/v2/sft/train.jsonl \
   --output-dir /path/to/checkpoints/raise-sft
 
 python -m raise_method.prepare_data \
@@ -101,6 +103,8 @@ The last command runs feedback-guided GRPO: it samples K candidates, verifies
 each candidate, selects frequently failed checks for fresh guided rollouts,
 and applies the context-corrected policy update under the original prompt.
 Install the pinned veRL revision from `requirements.txt` before launching.
+For the known CUDA stack, use `constraints-cuda.txt` as an additional pip
+constraint file.
 For model grading,
 `raise-evaluate` generates with vLLM and scores each completion with the exact
 Cedar verifier. `raise-merge-adapter` exports a merged LoRA model when needed.
