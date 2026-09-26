@@ -1,0 +1,20 @@
+defaults:
+  - base
+  - _self_
+
+data:
+  max_prompt_length: 4096
+actor_rollout_ref:
+  actor:
+    ppo_micro_batch_size_per_gpu: 4
+  ref:
+    log_prob_micro_batch_size_per_gpu: 4
+  rollout:
+    tensor_model_parallel_size: 2
+    gpu_memory_utilization: 0.35
+    log_prob_micro_batch_size_per_gpu: 4
+trainer:
+  logger: [console, file]
+ray_kwargs:
+  ray_init:
+    num_cpus: 48

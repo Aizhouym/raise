@@ -1,0 +1,10 @@
+# The training adapter follows the pinned veRL API documented below.
+torch>=2.1
+transformers>=4.40
+hydra-core>=1.3
+ray[default]>=2.9
+numpy>=1.24
+pytest>=8.0
+
+# Install the exact upstream revision when running distributed training:
+# pip install git+https://github.com/verl-project/verl.git@7aed6b230776f963fa09509c10d9c3a767d1102c

@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.egg-info/
+
+# Local models, datasets, checkpoints, logs, and generated training output.
+models/
+data/
+checkpoints/
+runs/
+results/
+outputs/
+*.log
+.env
+.env.*
+!.env.example
