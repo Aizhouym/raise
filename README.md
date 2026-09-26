@@ -1,4 +1,6 @@
-# RAISE
+# RAISE: Reinforcing Access Control Policy Synthesis in LLMs via Symbolic Evaluation
+
+Method overview: [`raise-method.pdf`](raise-method.pdf)
 
 This repository contains the minimal code implementation of **RAISE**
 (*Reinforcing Access Control Policy Synthesis in LLMs via Symbolic Evaluation*).
