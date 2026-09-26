@@ -1,16 +1,29 @@
 # RAISE: Reinforcing Access Control Policy Synthesis in LLMs via Symbolic Evaluation
 
-Method overview: [`raise-method.pdf`](raise-method.pdf)
-
 This repository contains the minimal code implementation of **RAISE**
 (*Reinforcing Access Control Policy Synthesis in LLMs via Symbolic Evaluation*).
 RAISE trains a policy model with a Cedar verifier: all-failure rollout groups
 are routed to fresh generations conditioned on selected failed-check feedback,
 and successful guided candidates are optimized under the original prompt.
 
-The release intentionally contains source code only. It does not contain model
-weights, training datasets, checkpoints, logs, generated runs, evaluation
-results, or paper figures.
+## Method overview
+
+The figure below summarizes the four stages of RAISE. Supervised fine-tuning
+teaches the model to generate verified Cedar policies. Verification-based
+routing then separates mixed-reward, all-failure, and all-correct rollout
+groups. All-failure groups receive selected failed-check descriptions and
+counterexamples for fresh feedback-guided exploration. Finally, the resulting
+candidates are evaluated under the original requirement and schema using the
+context-corrected objective. At inference time, the trained model generates a
+policy from the requirement and schema without verifier feedback.
+
+[![RAISE method overview](raise-method.png)](raise-method.pdf)
+
+The full-resolution diagram is available as [`raise-method.pdf`](raise-method.pdf).
+
+The release intentionally contains source code and the method overview figure
+only. It does not contain model weights, training datasets, checkpoints, logs,
+generated runs, or evaluation results.
 
 ## Layout
 
